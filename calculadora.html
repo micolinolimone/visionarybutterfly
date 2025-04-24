@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculadora de Benefício</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f6f6f6;
+      padding: 20px;
+      margin: 0;
+    }
+    #calculadora {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #205375;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1a4665;
+    }
+    #resultado {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #205375;
+    }
+  </style>
+</head>
+<body>
+  <div id="calculadora">
+    <h2>Calcule o seu benefício</h2>
+    <p>Insira o valor do imóvel e o valor que gostaria de pagar. Mostramos quanto pode poupar (já com a comissão de 10% descontada).</p>
+
+    <label for="valorOriginal">Valor do imóvel (€):</label>
+    <input type="number" id="valorOriginal" placeholder="Ex: 300000" />
+
+    <label for="valorDesejado">Valor desejado de compra (€):</label>
+    <input type="number" id="valorDesejado" placeholder="Ex: 275000" />
+
+    <p><strong>Comissão:</strong> 10% sobre o valor do desconto obtido</p>
+
+    <button onclick="calcularGanho()">Calcular</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function calcularGanho() {
+      const valorOriginal = parseFloat(document.getElementById("valorOriginal").value);
+      const valorDesejado = parseFloat(document.getElementById("valorDesejado").value);
+      const comissao = 0.10;
+
+      if (!valorOriginal || !valorDesejado || valorDesejado >= valorOriginal) {
+        document.getElementById("resultado").innerHTML =
+          '<p style="color:red;">Por favor, insira valores válidos. O valor desejado deve ser inferior ao valor do imóvel.</p>';
+        return;
+      }
+
+      const descontoConseguido = valorOriginal - valorDesejado;
+      const valorComissao = descontoConseguido * comissao;
+      const poupancaLiquida = descontoConseguido - valorComissao;
+
+      const formatarMoeda = (valor) => {
+        return valor.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €';
+      };
+
+      document.getElementById("resultado").innerHTML =
+        `<p>🌟 Poupança líquida estimada: ${formatarMoeda(poupancaLiquida)}</p>`;
+    }
+  </script>
+</body>
+</html>
